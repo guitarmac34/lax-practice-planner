@@ -383,3 +383,104 @@ select {
 .print-header {
   display: none;
 }
+
+/* Sidebar Divider */
+.sidebar-divider {
+  height: 1px;
+  background: rgba(196, 169, 77, 0.3);
+  margin: 8px 20px;
+}
+
+/* Rich Text Editor */
+.rich-text-editor {
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+  overflow: hidden;
+}
+
+.editor-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  padding: 8px;
+  background: var(--color-bg);
+  border-bottom: 1px solid var(--color-border);
+}
+
+.editor-toolbar button {
+  padding: 4px 10px;
+  border: 1px solid var(--color-border);
+  border-radius: 4px;
+  background: var(--color-surface);
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--color-text);
+  cursor: pointer;
+}
+
+.editor-toolbar button:hover {
+  background: var(--color-bg);
+}
+
+.editor-toolbar button.active {
+  background: var(--color-primary);
+  color: white;
+  border-color: var(--color-primary);
+}
+
+.ProseMirror {
+  padding: 16px;
+  min-height: 200px;
+  outline: none;
+}
+
+.ProseMirror h2 { font-size: 1.3rem; margin: 16px 0 8px; color: var(--color-primary); }
+.ProseMirror h3 { font-size: 1.1rem; margin: 12px 0 6px; color: var(--color-primary-dark); }
+.ProseMirror p { margin-bottom: 8px; }
+.ProseMirror ul, .ProseMirror ol { padding-left: 24px; margin-bottom: 8px; }
+.ProseMirror a { color: var(--color-primary); text-decoration: underline; }
+.ProseMirror iframe { max-width: 100%; margin: 12px 0; border-radius: var(--radius); }
+
+/* Content Display */
+.content-display h2 { font-size: 1.3rem; margin: 16px 0 8px; color: var(--color-primary); }
+.content-display h3 { font-size: 1.1rem; margin: 12px 0 6px; color: var(--color-primary-dark); }
+.content-display p { margin-bottom: 8px; }
+.content-display ul, .content-display ol { padding-left: 24px; margin-bottom: 8px; }
+.content-display a { color: var(--color-primary); text-decoration: underline; }
+.content-display iframe { max-width: 100%; margin: 12px 0; border-radius: var(--radius); }
+
+/* Schedule Table */
+.schedule-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.schedule-table th {
+  text-align: left;
+  padding: 10px 12px;
+  background: var(--color-bg);
+  font-size: 0.82rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: var(--color-text-muted);
+  border-bottom: 2px solid var(--color-border);
+}
+
+.schedule-table td {
+  padding: 10px 12px;
+  border-bottom: 1px solid var(--color-border);
+  font-size: 0.9rem;
+}
+
+.schedule-table tbody tr:hover {
+  background: var(--color-bg);
+}
+
+/* Password Gate */
+.password-gate {
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  min-height: 60vh;
+}

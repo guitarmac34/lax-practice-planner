@@ -1,11 +1,13 @@
 import { createContext, useContext, useState, useCallback, useEffect, type ReactNode } from "react";
-import type { Coach, Drill, Player, PracticePlan } from "./types";
+import type { Coach, Drill, Player, PracticePlan, ContentPage, ScheduleEvent } from "./types";
 
 interface AppState {
   drills: Drill[];
   coaches: Coach[];
   players: Player[];
   plans: PracticePlan[];
+  contentPages: ContentPage[];
+  schedule: ScheduleEvent[];
 }
 
 interface AppContextType extends AppState {
@@ -21,6 +23,11 @@ interface AppContextType extends AppState {
   addPlan: (plan: PracticePlan) => void;
   updatePlan: (plan: PracticePlan) => void;
   deletePlan: (id: string) => void;
+  upsertContentPage: (page: ContentPage) => void;
+  addScheduleEvent: (event: ScheduleEvent) => void;
+  updateScheduleEvent: (event: ScheduleEvent) => void;
+  deleteScheduleEvent: (id: string) => void;
+  importSchedule: (events: ScheduleEvent[]) => void;
 }
 
 const STORAGE_KEY = "lax-practice-data";
@@ -32,7 +39,7 @@ function loadState(): AppState {
   } catch {
     // ignore parse errors
   }
-  return { drills: [], coaches: [], players: [], plans: [] };
+  return { drills: [], coaches: [], players: [], plans: [], contentPages: [], schedule: [] };
 }
 
 function saveState(state: AppState) {
@@ -120,6 +127,40 @@ export function AppProvider({ children }: { children: ReactNode }) {
     }));
   }, []);
 
+  const upsertContentPage = useCallback((page: ContentPage) => {
+    setState((s) => {
+      const exists = s.contentPages.some((p) => p.id === page.id);
+      return {
+        ...s,
+        contentPages: exists
+          ? s.contentPages.map((p) => (p.id === page.id ? page : p))
+          : [...s.contentPages, page],
+      };
+    });
+  }, []);
+
+  const addScheduleEvent = useCallback((event: ScheduleEvent) => {
+    setState((s) => ({ ...s, schedule: [...s.schedule, event] }));
+  }, []);
+
+  const updateScheduleEvent = useCallback((event: ScheduleEvent) => {
+    setState((s) => ({
+      ...s,
+      schedule: s.schedule.map((e) => (e.id === event.id ? event : e)),
+    }));
+  }, []);
+
+  const deleteScheduleEvent = useCallback((id: string) => {
+    setState((s) => ({
+      ...s,
+      schedule: s.schedule.filter((e) => e.id !== id),
+    }));
+  }, []);
+
+  const importSchedule = useCallback((events: ScheduleEvent[]) => {
+    setState((s) => ({ ...s, schedule: events }));
+  }, []);
+
   return (
     <AppContext.Provider
       value={{
@@ -136,6 +177,11 @@ export function AppProvider({ children }: { children: ReactNode }) {
         addPlan,
         updatePlan,
         deletePlan,
+        upsertContentPage,
+        addScheduleEvent,
+        updateScheduleEvent,
+        deleteScheduleEvent,
+        importSchedule,
       }}
     >
       {children}

@@ -16,8 +16,12 @@ export default function Layout() {
           <NavLink to="/drills">Drill Library</NavLink>
           <NavLink to="/plans">Practice Plans</NavLink>
           <NavLink to="/history">History</NavLink>
-          <NavLink to="/coaches">Coaches</NavLink>
+          <NavLink to="/coaches">Coach Roster</NavLink>
           <NavLink to="/players">Players</NavLink>
+          <div className="sidebar-divider" />
+          <NavLink to="/schedule">Schedule</NavLink>
+          <NavLink to="/parent-info">Parent Info</NavLink>
+          <NavLink to="/coach-resources">Coach Resources</NavLink>
         </nav>
       </aside>
       <main className="main-content">

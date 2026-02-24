@@ -10,6 +10,9 @@ import PracticeHistory from "./pages/PracticeHistory";
 import Coaches from "./pages/Coaches";
 import Players from "./pages/Players";
 import SharedPlan from "./pages/SharedPlan";
+import ParentInfo from "./pages/ParentInfo";
+import CoachResources from "./pages/CoachResources";
+import Schedule from "./pages/Schedule";
 import "./index.css";
 
 export default function App() {
@@ -28,6 +31,9 @@ export default function App() {
             <Route path="history" element={<PracticeHistory />} />
             <Route path="coaches" element={<Coaches />} />
             <Route path="players" element={<Players />} />
+            <Route path="schedule" element={<Schedule />} />
+            <Route path="parent-info" element={<ParentInfo />} />
+            <Route path="coach-resources" element={<CoachResources />} />
           </Route>
         </Routes>
       </BrowserRouter>

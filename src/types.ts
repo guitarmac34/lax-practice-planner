@@ -79,3 +79,29 @@ export interface ShareablePlan {
   drills: Drill[];
   coaches: Coach[];
 }
+
+export interface ContentPage {
+  id: string;
+  title: string;
+  content: string;
+  lastUpdated: string;
+}
+
+export type EventType = "game" | "practice" | "tournament" | "other";
+
+export const EVENT_TYPES: { value: EventType; label: string }[] = [
+  { value: "game", label: "Game" },
+  { value: "practice", label: "Practice" },
+  { value: "tournament", label: "Tournament" },
+  { value: "other", label: "Other" },
+];
+
+export interface ScheduleEvent {
+  id: string;
+  date: string;
+  time: string;
+  eventType: EventType;
+  opponent: string;
+  location: string;
+  notes: string;
+}
