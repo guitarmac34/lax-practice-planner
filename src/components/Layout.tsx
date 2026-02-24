@@ -5,8 +5,9 @@ export default function Layout() {
     <div className="app-layout">
       <aside className="sidebar no-print">
         <div className="sidebar-header">
-          <h1>Lax Practice</h1>
-          <span>Youth Lacrosse Planner</span>
+          <img src="/logo.png" alt="Buford Lacrosse" />
+          <h1>Practice Planner</h1>
+          <span>Buford Youth Lacrosse Association</span>
         </div>
         <nav>
           <NavLink to="/" end>

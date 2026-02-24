@@ -1,15 +1,17 @@
 :root {
-  --color-primary: #1a365d;
-  --color-primary-light: #2a4a7f;
-  --color-accent: #e07020;
-  --color-accent-light: #f0944d;
-  --color-bg: #f5f7fa;
+  --color-primary: #1A7A2E;
+  --color-primary-light: #22923A;
+  --color-primary-dark: #146323;
+  --color-accent: #C4A94D;
+  --color-accent-light: #D4BC6A;
+  --color-accent-dark: #A8903A;
+  --color-bg: #f5f7f5;
   --color-surface: #ffffff;
-  --color-text: #1a202c;
-  --color-text-muted: #718096;
-  --color-border: #e2e8f0;
-  --color-danger: #e53e3e;
-  --color-success: #38a169;
+  --color-text: #1a2c1a;
+  --color-text-muted: #5a6e5a;
+  --color-border: #d4e0d4;
+  --color-danger: #c53030;
+  --color-success: #1A7A2E;
   --radius: 8px;
   --shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
   --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.1);
@@ -49,8 +51,8 @@ select {
 }
 
 .sidebar {
-  width: 240px;
-  background: var(--color-primary);
+  width: 250px;
+  background: linear-gradient(180deg, #146323 0%, #1A7A2E 40%, #0f4f1c 100%);
   color: white;
   padding: 0;
   flex-shrink: 0;
@@ -59,19 +61,28 @@ select {
 }
 
 .sidebar-header {
-  padding: 24px 20px;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 20px 20px 16px;
+  border-bottom: 1px solid rgba(196, 169, 77, 0.3);
+  text-align: center;
+}
+
+.sidebar-header img {
+  width: 160px;
+  margin-bottom: 4px;
 }
 
 .sidebar-header h1 {
-  font-size: 1.4rem;
+  font-size: 1.15rem;
   font-weight: 700;
-  letter-spacing: -0.5px;
+  letter-spacing: 0.5px;
+  color: #C4A94D;
+  text-transform: uppercase;
 }
 
 .sidebar-header span {
-  font-size: 0.8rem;
+  font-size: 0.75rem;
   opacity: 0.7;
+  letter-spacing: 0.3px;
 }
 
 .sidebar nav {
@@ -88,18 +99,19 @@ select {
   text-decoration: none;
   font-size: 0.95rem;
   transition: background 0.15s, color 0.15s;
+  border-left: 3px solid transparent;
 }
 
 .sidebar nav a:hover {
-  background: rgba(255, 255, 255, 0.1);
+  background: rgba(196, 169, 77, 0.15);
   color: white;
 }
 
 .sidebar nav a.active {
-  background: rgba(255, 255, 255, 0.15);
-  color: white;
+  background: rgba(196, 169, 77, 0.2);
+  color: #C4A94D;
   font-weight: 600;
-  border-left: 3px solid var(--color-accent);
+  border-left: 3px solid #C4A94D;
 }
 
 .main-content {
@@ -195,6 +207,7 @@ select {
   box-shadow: var(--shadow);
   border: 1px solid var(--color-border);
   padding: 20px;
+  border-top: 3px solid var(--color-primary);
 }
 
 /* Forms */
@@ -227,7 +240,7 @@ select {
 .form-group select:focus {
   outline: none;
   border-color: var(--color-primary);
-  box-shadow: 0 0 0 3px rgba(26, 54, 93, 0.1);
+  box-shadow: 0 0 0 3px rgba(26, 122, 46, 0.15);
 }
 
 .form-group textarea {
@@ -247,10 +260,10 @@ select {
 }
 
 .badge-warmup { background: #fef3c7; color: #92400e; }
-.badge-offense { background: #dbeafe; color: #1e40af; }
+.badge-offense { background: #d1fae5; color: #065f46; }
 .badge-defense { background: #fce7f3; color: #9d174d; }
 .badge-shooting { background: #fee2e2; color: #991b1b; }
-.badge-passing { background: #d1fae5; color: #065f46; }
+.badge-passing { background: #dbeafe; color: #1e40af; }
 .badge-ground-balls { background: #e0e7ff; color: #3730a3; }
 .badge-goalie { background: #ede9fe; color: #5b21b6; }
 .badge-conditioning { background: #ffedd5; color: #9a3412; }
@@ -276,6 +289,7 @@ select {
   width: 90%;
   max-height: 85vh;
   overflow-y: auto;
+  border-top: 3px solid var(--color-primary);
 }
 
 .modal h3 {
@@ -352,6 +366,7 @@ select {
   .card {
     box-shadow: none;
     border: 1px solid #ccc;
+    border-top: 3px solid #1A7A2E;
     break-inside: avoid;
   }
 

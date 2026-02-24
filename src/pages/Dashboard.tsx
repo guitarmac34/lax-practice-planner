@@ -43,7 +43,7 @@ export default function Dashboard() {
             style={{
               fontSize: "2rem",
               fontWeight: 700,
-              color: "var(--color-accent)",
+              color: "var(--color-accent-dark)",
             }}
           >
             {plans.length}
@@ -146,7 +146,7 @@ export default function Dashboard() {
 
       {plans.length === 0 && drills.length === 0 && (
         <div className="empty-state">
-          <h3>Welcome to Lax Practice!</h3>
+          <h3>Welcome to Buford Lacrosse Practice Planner!</h3>
           <p>Get started by adding drills to your library, then create a practice plan.</p>
           <div className="flex gap-2" style={{ justifyContent: "center", marginTop: 16 }}>
             <Link to="/drills" className="btn btn-primary">
