@@ -1,9 +1,10 @@
 import { createContext, useContext, useState, useCallback, useEffect, type ReactNode } from "react";
-import type { Coach, Drill, PracticePlan } from "./types";
+import type { Coach, Drill, Player, PracticePlan } from "./types";
 
 interface AppState {
   drills: Drill[];
   coaches: Coach[];
+  players: Player[];
   plans: PracticePlan[];
 }
 
@@ -14,6 +15,9 @@ interface AppContextType extends AppState {
   addCoach: (coach: Coach) => void;
   updateCoach: (coach: Coach) => void;
   deleteCoach: (id: string) => void;
+  addPlayer: (player: Player) => void;
+  updatePlayer: (player: Player) => void;
+  deletePlayer: (id: string) => void;
   addPlan: (plan: PracticePlan) => void;
   updatePlan: (plan: PracticePlan) => void;
   deletePlan: (id: string) => void;
@@ -28,7 +32,7 @@ function loadState(): AppState {
   } catch {
     // ignore parse errors
   }
-  return { drills: [], coaches: [], plans: [] };
+  return { drills: [], coaches: [], players: [], plans: [] };
 }
 
 function saveState(state: AppState) {
@@ -80,6 +84,24 @@ export function AppProvider({ children }: { children: ReactNode }) {
     }));
   }, []);
 
+  const addPlayer = useCallback((player: Player) => {
+    setState((s) => ({ ...s, players: [...s.players, player] }));
+  }, []);
+
+  const updatePlayer = useCallback((player: Player) => {
+    setState((s) => ({
+      ...s,
+      players: s.players.map((p) => (p.id === player.id ? player : p)),
+    }));
+  }, []);
+
+  const deletePlayer = useCallback((id: string) => {
+    setState((s) => ({
+      ...s,
+      players: s.players.filter((p) => p.id !== id),
+    }));
+  }, []);
+
   const addPlan = useCallback((plan: PracticePlan) => {
     setState((s) => ({ ...s, plans: [...s.plans, plan] }));
   }, []);
@@ -108,6 +130,9 @@ export function AppProvider({ children }: { children: ReactNode }) {
         addCoach,
         updateCoach,
         deleteCoach,
+        addPlayer,
+        updatePlayer,
+        deletePlayer,
         addPlan,
         updatePlan,
         deletePlan,

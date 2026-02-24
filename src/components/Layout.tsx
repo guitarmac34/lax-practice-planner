@@ -16,6 +16,7 @@ export default function Layout() {
           <NavLink to="/plans">Practice Plans</NavLink>
           <NavLink to="/history">History</NavLink>
           <NavLink to="/coaches">Coaches</NavLink>
+          <NavLink to="/players">Players</NavLink>
         </nav>
       </aside>
       <main className="main-content">

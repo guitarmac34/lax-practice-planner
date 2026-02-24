@@ -58,6 +58,22 @@ export interface PracticePlan {
   stations: Station[];
 }
 
+export type PlayerPosition = "goalie" | "middie" | "attack" | "defense";
+
+export const PLAYER_POSITIONS: { value: PlayerPosition; label: string }[] = [
+  { value: "goalie", label: "Goalie" },
+  { value: "middie", label: "Middie" },
+  { value: "attack", label: "Attack" },
+  { value: "defense", label: "Defense" },
+];
+
+export interface Player {
+  id: string;
+  name: string;
+  positions: PlayerPosition[];
+  rank: number;
+}
+
 export interface ShareablePlan {
   plan: PracticePlan;
   drills: Drill[];

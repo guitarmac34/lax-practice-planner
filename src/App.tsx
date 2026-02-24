@@ -8,6 +8,7 @@ import PlanBuilder from "./pages/PlanBuilder";
 import PlanView from "./pages/PlanView";
 import PracticeHistory from "./pages/PracticeHistory";
 import Coaches from "./pages/Coaches";
+import Players from "./pages/Players";
 import SharedPlan from "./pages/SharedPlan";
 import "./index.css";
 
@@ -26,6 +27,7 @@ export default function App() {
             <Route path="plans/:id/view" element={<PlanView />} />
             <Route path="history" element={<PracticeHistory />} />
             <Route path="coaches" element={<Coaches />} />
+            <Route path="players" element={<Players />} />
           </Route>
         </Routes>
       </BrowserRouter>
