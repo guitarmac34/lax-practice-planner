@@ -1,6 +1,6 @@
 import { useState, type ReactNode } from "react";
+import { useApp } from "../context";
 
-const COACH_PASSWORD = "buford2026";
 const SESSION_KEY = "coach-resources-unlocked";
 
 interface PasswordGateProps {
@@ -8,15 +8,17 @@ interface PasswordGateProps {
 }
 
 export default function PasswordGate({ children }: PasswordGateProps) {
+  const { login } = useApp();
   const [unlocked, setUnlocked] = useState(
     () => sessionStorage.getItem(SESSION_KEY) === "true"
   );
   const [password, setPassword] = useState("");
   const [error, setError] = useState(false);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (password === COACH_PASSWORD) {
+    const ok = await login(password);
+    if (ok) {
       sessionStorage.setItem(SESSION_KEY, "true");
       setUnlocked(true);
     } else {

@@ -4,7 +4,7 @@ import type { Player, PlayerPosition } from "../types";
 import { PLAYER_POSITIONS } from "../types";
 
 export default function Players() {
-  const { players, addPlayer, updatePlayer, deletePlayer } = useApp();
+  const { players, addPlayer, updatePlayer, deletePlayer, isAdmin } = useApp();
   const [showForm, setShowForm] = useState(false);
   const [editing, setEditing] = useState<Player | undefined>();
   const [name, setName] = useState("");
@@ -33,7 +33,7 @@ export default function Players() {
     );
   }
 
-  function handleSubmit(e: FormEvent) {
+  async function handleSubmit(e: FormEvent) {
     e.preventDefault();
     if (!name.trim() || positions.length === 0) return;
 
@@ -45,16 +45,16 @@ export default function Players() {
     };
 
     if (editing) {
-      updatePlayer(player);
+      await updatePlayer(player);
     } else {
-      addPlayer(player);
+      await addPlayer(player);
     }
     setShowForm(false);
   }
 
-  function handleDelete(id: string) {
+  async function handleDelete(id: string) {
     if (confirm("Delete this player?")) {
-      deletePlayer(id);
+      await deletePlayer(id);
     }
   }
 
@@ -64,9 +64,11 @@ export default function Players() {
     <div>
       <div className="page-header">
         <h2>Player Directory</h2>
-        <button className="btn btn-primary" onClick={openNew}>
-          + Add Player
-        </button>
+        {isAdmin && (
+          <button className="btn btn-primary" onClick={openNew}>
+            + Add Player
+          </button>
+        )}
       </div>
 
       {players.length === 0 ? (
@@ -116,25 +118,27 @@ export default function Players() {
                   </span>
                 ))}
               </div>
-              <div className="flex gap-2 mt-4">
-                <button
-                  className="btn btn-outline btn-sm"
-                  onClick={() => openEdit(player)}
-                >
-                  Edit
-                </button>
-                <button
-                  className="btn btn-sm"
-                  style={{
-                    background: "none",
-                    color: "var(--color-danger)",
-                    border: "1px solid var(--color-danger)",
-                  }}
-                  onClick={() => handleDelete(player.id)}
-                >
-                  Delete
-                </button>
-              </div>
+              {isAdmin && (
+                <div className="flex gap-2 mt-4">
+                  <button
+                    className="btn btn-outline btn-sm"
+                    onClick={() => openEdit(player)}
+                  >
+                    Edit
+                  </button>
+                  <button
+                    className="btn btn-sm"
+                    style={{
+                      background: "none",
+                      color: "var(--color-danger)",
+                      border: "1px solid var(--color-danger)",
+                    }}
+                    onClick={() => handleDelete(player.id)}
+                  >
+                    Delete
+                  </button>
+                </div>
+              )}
             </div>
           ))}
         </div>

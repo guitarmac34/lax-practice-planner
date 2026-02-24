@@ -3,7 +3,7 @@ import { useApp } from "../context";
 import type { Coach } from "../types";
 
 export default function Coaches() {
-  const { coaches, addCoach, updateCoach, deleteCoach } = useApp();
+  const { coaches, addCoach, updateCoach, deleteCoach, isAdmin } = useApp();
   const [showForm, setShowForm] = useState(false);
   const [editing, setEditing] = useState<Coach | undefined>();
   const [name, setName] = useState("");
@@ -26,7 +26,7 @@ export default function Coaches() {
     setShowForm(true);
   }
 
-  function handleSubmit(e: FormEvent) {
+  async function handleSubmit(e: FormEvent) {
     e.preventDefault();
     if (!name.trim()) return;
 
@@ -38,16 +38,16 @@ export default function Coaches() {
     };
 
     if (editing) {
-      updateCoach(coach);
+      await updateCoach(coach);
     } else {
-      addCoach(coach);
+      await addCoach(coach);
     }
     setShowForm(false);
   }
 
-  function handleDelete(id: string) {
+  async function handleDelete(id: string) {
     if (confirm("Delete this coach?")) {
-      deleteCoach(id);
+      await deleteCoach(id);
     }
   }
 
@@ -55,9 +55,11 @@ export default function Coaches() {
     <div>
       <div className="page-header">
         <h2>Coaches</h2>
-        <button className="btn btn-primary" onClick={openNew}>
-          + Add Coach
-        </button>
+        {isAdmin && (
+          <button className="btn btn-primary" onClick={openNew}>
+            + Add Coach
+          </button>
+        )}
       </div>
 
       {coaches.length === 0 ? (
@@ -81,25 +83,27 @@ export default function Coaches() {
               {coach.phone && (
                 <p className="text-sm text-muted">{coach.phone}</p>
               )}
-              <div className="flex gap-2 mt-4">
-                <button
-                  className="btn btn-outline btn-sm"
-                  onClick={() => openEdit(coach)}
-                >
-                  Edit
-                </button>
-                <button
-                  className="btn btn-sm"
-                  style={{
-                    background: "none",
-                    color: "var(--color-danger)",
-                    border: "1px solid var(--color-danger)",
-                  }}
-                  onClick={() => handleDelete(coach.id)}
-                >
-                  Delete
-                </button>
-              </div>
+              {isAdmin && (
+                <div className="flex gap-2 mt-4">
+                  <button
+                    className="btn btn-outline btn-sm"
+                    onClick={() => openEdit(coach)}
+                  >
+                    Edit
+                  </button>
+                  <button
+                    className="btn btn-sm"
+                    style={{
+                      background: "none",
+                      color: "var(--color-danger)",
+                      border: "1px solid var(--color-danger)",
+                    }}
+                    onClick={() => handleDelete(coach.id)}
+                  >
+                    Delete
+                  </button>
+                </div>
+              )}
             </div>
           ))}
         </div>

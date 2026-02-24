@@ -3,7 +3,7 @@ import { useApp } from "../context";
 import { formatDate, getTotalPlanMinutes } from "../utils";
 
 export default function Dashboard() {
-  const { drills, coaches, plans } = useApp();
+  const { drills, coaches, plans, isAdmin } = useApp();
 
   const today = new Date().toISOString().split("T")[0];
 
@@ -20,9 +20,11 @@ export default function Dashboard() {
     <div>
       <div className="page-header">
         <h2>Dashboard</h2>
-        <Link to="/plans/new" className="btn btn-primary">
-          + New Practice Plan
-        </Link>
+        {isAdmin && (
+          <Link to="/plans/new" className="btn btn-primary">
+            + New Practice Plan
+          </Link>
+        )}
       </div>
 
       <div className="grid-3 mb-4">
@@ -82,12 +84,14 @@ export default function Dashboard() {
                   {getTotalPlanMinutes(plan.stations)} min
                 </p>
                 <div className="flex gap-2 mt-2">
-                  <Link
-                    to={`/plans/${plan.id}`}
-                    className="btn btn-outline btn-sm"
-                  >
-                    Edit
-                  </Link>
+                  {isAdmin && (
+                    <Link
+                      to={`/plans/${plan.id}`}
+                      className="btn btn-outline btn-sm"
+                    >
+                      Edit
+                    </Link>
+                  )}
                   <Link
                     to={`/plans/${plan.id}/view`}
                     className="btn btn-accent btn-sm"
@@ -148,14 +152,16 @@ export default function Dashboard() {
         <div className="empty-state">
           <h3>Welcome to Buford Lacrosse Practice Planner!</h3>
           <p>Get started by adding drills to your library, then create a practice plan.</p>
-          <div className="flex gap-2" style={{ justifyContent: "center", marginTop: 16 }}>
-            <Link to="/drills" className="btn btn-primary">
-              Add Drills
-            </Link>
-            <Link to="/coaches" className="btn btn-outline">
-              Add Coaches
-            </Link>
-          </div>
+          {isAdmin && (
+            <div className="flex gap-2" style={{ justifyContent: "center", marginTop: 16 }}>
+              <Link to="/drills" className="btn btn-primary">
+                Add Drills
+              </Link>
+              <Link to="/coaches" className="btn btn-outline">
+                Add Coaches
+              </Link>
+            </div>
+          )}
         </div>
       )}
     </div>

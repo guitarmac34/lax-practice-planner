@@ -4,7 +4,7 @@ import RichTextEditor from "../components/RichTextEditor";
 import PasswordGate from "../components/PasswordGate";
 
 export default function CoachResources() {
-  const { contentPages, upsertContentPage } = useApp();
+  const { contentPages, upsertContentPage, isAdmin } = useApp();
   const page = contentPages.find((p) => p.id === "coaches-content");
   const [editing, setEditing] = useState(false);
   const [draft, setDraft] = useState(page?.content || "");
@@ -14,8 +14,8 @@ export default function CoachResources() {
     setEditing(true);
   };
 
-  const handleSave = () => {
-    upsertContentPage({
+  const handleSave = async () => {
+    await upsertContentPage({
       id: "coaches-content",
       title: "Coach Resources",
       content: draft,
@@ -33,7 +33,7 @@ export default function CoachResources() {
       <div>
         <div className="page-header">
           <h2>Coach Resources</h2>
-          {!editing && (
+          {!editing && isAdmin && (
             <button className="btn btn-primary" onClick={handleEdit}>
               Edit Page
             </button>
@@ -67,7 +67,7 @@ export default function CoachResources() {
         ) : (
           <div className="empty-state">
             <h3>No content yet</h3>
-            <p>Click "Edit Page" to add coach resources.</p>
+            <p>{isAdmin ? 'Click "Edit Page" to add coach resources.' : "Content coming soon."}</p>
           </div>
         )}
       </div>

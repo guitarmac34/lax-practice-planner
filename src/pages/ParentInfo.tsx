@@ -3,7 +3,7 @@ import { useApp } from "../context";
 import RichTextEditor from "../components/RichTextEditor";
 
 export default function ParentInfo() {
-  const { contentPages, upsertContentPage } = useApp();
+  const { contentPages, upsertContentPage, isAdmin } = useApp();
   const page = contentPages.find((p) => p.id === "parents");
   const [editing, setEditing] = useState(false);
   const [draft, setDraft] = useState(page?.content || "");
@@ -13,8 +13,8 @@ export default function ParentInfo() {
     setEditing(true);
   };
 
-  const handleSave = () => {
-    upsertContentPage({
+  const handleSave = async () => {
+    await upsertContentPage({
       id: "parents",
       title: "Parent Information",
       content: draft,
@@ -31,7 +31,7 @@ export default function ParentInfo() {
     <div>
       <div className="page-header">
         <h2>Parent Information</h2>
-        {!editing && (
+        {!editing && isAdmin && (
           <button className="btn btn-primary" onClick={handleEdit}>
             Edit Page
           </button>
@@ -65,7 +65,7 @@ export default function ParentInfo() {
       ) : (
         <div className="empty-state">
           <h3>No content yet</h3>
-          <p>Click "Edit Page" to add parent information.</p>
+          <p>{isAdmin ? 'Click "Edit Page" to add parent information.' : "Content coming soon."}</p>
         </div>
       )}
     </div>

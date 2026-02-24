@@ -1,8 +1,32 @@
 import { useEditor, EditorContent } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
-import Youtube from "@tiptap/extension-youtube";
 import Link from "@tiptap/extension-link";
+import { Node as TiptapNode, mergeAttributes } from "@tiptap/core";
 import { useApp } from "../context";
+
+const Iframe = TiptapNode.create({
+  name: "iframe",
+  group: "block",
+  atom: true,
+
+  addAttributes() {
+    return {
+      src: { default: null },
+      frameborder: { default: "0" },
+      allowfullscreen: { default: "true" },
+      allow: { default: "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" },
+      style: { default: "width: 100%; aspect-ratio: 16/9; border: 0; border-radius: var(--radius);" },
+    };
+  },
+
+  parseHTML() {
+    return [{ tag: "iframe" }];
+  },
+
+  renderHTML({ HTMLAttributes }) {
+    return ["iframe", mergeAttributes(HTMLAttributes)];
+  },
+});
 
 interface RichTextEditorProps {
   content: string;
@@ -15,7 +39,7 @@ export default function RichTextEditor({ content, onChange }: RichTextEditorProp
   const editor = useEditor({
     extensions: [
       StarterKit,
-      Youtube.configure({ controls: true }),
+      Iframe,
       Link.configure({ openOnClick: false }),
     ],
     content,
@@ -26,10 +50,29 @@ export default function RichTextEditor({ content, onChange }: RichTextEditorProp
 
   if (!editor) return null;
 
-  const insertYouTube = () => {
-    const url = prompt("Enter YouTube URL:");
+  const insertVideo = () => {
+    const url = prompt("Enter video URL (YouTube, Loom, Vimeo, etc.):");
     if (url) {
-      editor.commands.setYoutubeVideo({ src: url });
+      let embedUrl = url;
+      // Convert YouTube watch URLs to embed
+      const ytMatch = url.match(/(?:youtube\.com\/watch\?v=|youtu\.be\/)([\w-]+)/);
+      if (ytMatch) {
+        embedUrl = `https://www.youtube.com/embed/${ytMatch[1]}`;
+      }
+      // Convert Vimeo URLs to embed
+      const vimeoMatch = url.match(/vimeo\.com\/(\d+)/);
+      if (vimeoMatch) {
+        embedUrl = `https://player.vimeo.com/video/${vimeoMatch[1]}`;
+      }
+      // Convert Loom share URLs to embed
+      const loomMatch = url.match(/loom\.com\/share\/([\w-]+)/);
+      if (loomMatch) {
+        embedUrl = `https://www.loom.com/embed/${loomMatch[1]}`;
+      }
+      editor.chain().focus().insertContent({
+        type: "iframe",
+        attrs: { src: embedUrl },
+      }).run();
     }
   };
 
@@ -100,8 +143,8 @@ export default function RichTextEditor({ content, onChange }: RichTextEditorProp
         >
           OL
         </button>
-        <button type="button" onClick={insertYouTube}>
-          YouTube
+        <button type="button" onClick={insertVideo}>
+          Embed Video
         </button>
         <button type="button" onClick={insertPlayLink}>
           Link to Play

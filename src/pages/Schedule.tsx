@@ -14,7 +14,7 @@ const emptyEvent: Omit<ScheduleEvent, "id"> = {
 };
 
 export default function Schedule() {
-  const { schedule, addScheduleEvent, updateScheduleEvent, deleteScheduleEvent, importSchedule } = useApp();
+  const { schedule, addScheduleEvent, updateScheduleEvent, deleteScheduleEvent, importSchedule, isAdmin } = useApp();
   const [showModal, setShowModal] = useState(false);
   const [editingId, setEditingId] = useState<string | null>(null);
   const [form, setForm] = useState(emptyEvent);
@@ -38,12 +38,12 @@ export default function Schedule() {
     setShowModal(true);
   };
 
-  const handleSave = () => {
+  const handleSave = async () => {
     if (!form.date) return;
     if (editingId) {
-      updateScheduleEvent({ ...form, id: editingId });
+      await updateScheduleEvent({ ...form, id: editingId });
     } else {
-      addScheduleEvent({ ...form, id: crypto.randomUUID() });
+      await addScheduleEvent({ ...form, id: crypto.randomUUID() });
     }
     setShowModal(false);
   };
@@ -70,9 +70,9 @@ export default function Schedule() {
     if (fileRef.current) fileRef.current.value = "";
   };
 
-  const confirmImport = () => {
+  const confirmImport = async () => {
     if (csvPreview) {
-      importSchedule(csvPreview);
+      await importSchedule(csvPreview);
       setCsvPreview(null);
     }
   };
@@ -90,27 +90,29 @@ export default function Schedule() {
     <div>
       <div className="page-header">
         <h2>Schedule</h2>
-        <div className="flex gap-2">
-          <label className="btn btn-outline" style={{ cursor: "pointer" }}>
-            Upload CSV
-            <input
-              ref={fileRef}
-              type="file"
-              accept=".csv"
-              onChange={handleCsv}
-              style={{ display: "none" }}
-            />
-          </label>
-          <button className="btn btn-primary" onClick={openAdd}>
-            + Add Event
-          </button>
-        </div>
+        {isAdmin && (
+          <div className="flex gap-2">
+            <label className="btn btn-outline" style={{ cursor: "pointer" }}>
+              Upload CSV
+              <input
+                ref={fileRef}
+                type="file"
+                accept=".csv"
+                onChange={handleCsv}
+                style={{ display: "none" }}
+              />
+            </label>
+            <button className="btn btn-primary" onClick={openAdd}>
+              + Add Event
+            </button>
+          </div>
+        )}
       </div>
 
       {sorted.length === 0 ? (
         <div className="empty-state">
           <h3>No events scheduled</h3>
-          <p>Add events manually or upload a CSV file.</p>
+          <p>{isAdmin ? "Add events manually or upload a CSV file." : "No upcoming events."}</p>
         </div>
       ) : (
         <div className="card" style={{ padding: 0, overflow: "auto" }}>
@@ -123,7 +125,7 @@ export default function Schedule() {
                 <th>Opponent</th>
                 <th>Location</th>
                 <th>Notes</th>
-                <th>Actions</th>
+                {isAdmin && <th>Actions</th>}
               </tr>
             </thead>
             <tbody>
@@ -135,12 +137,14 @@ export default function Schedule() {
                   <td>{ev.opponent}</td>
                   <td>{ev.location}</td>
                   <td>{ev.notes}</td>
-                  <td>
-                    <div className="flex gap-2">
-                      <button className="btn btn-sm btn-outline" onClick={() => openEdit(ev)}>Edit</button>
-                      <button className="btn btn-sm btn-danger" onClick={() => deleteScheduleEvent(ev.id)}>Delete</button>
-                    </div>
-                  </td>
+                  {isAdmin && (
+                    <td>
+                      <div className="flex gap-2">
+                        <button className="btn btn-sm btn-outline" onClick={() => openEdit(ev)}>Edit</button>
+                        <button className="btn btn-sm btn-danger" onClick={() => deleteScheduleEvent(ev.id)}>Delete</button>
+                      </div>
+                    </td>
+                  )}
                 </tr>
               ))}
             </tbody>

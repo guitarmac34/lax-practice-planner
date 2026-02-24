@@ -416,7 +416,7 @@ export default function PlanBuilder() {
     setStations((prev) => prev.filter((s) => s.id !== stationId));
   }
 
-  function handleSave() {
+  async function handleSave() {
     if (!name.trim()) {
       alert("Please enter a plan name.");
       return;
@@ -431,9 +431,9 @@ export default function PlanBuilder() {
     };
 
     if (existing) {
-      updatePlan(plan);
+      await updatePlan(plan);
     } else {
-      addPlan(plan);
+      await addPlan(plan);
     }
 
     navigate("/plans");

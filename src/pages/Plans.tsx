@@ -3,15 +3,15 @@ import { useApp } from "../context";
 import { formatDate, getTotalPlanMinutes } from "../utils";
 
 export default function Plans() {
-  const { plans, deletePlan } = useApp();
+  const { plans, deletePlan, isAdmin } = useApp();
 
   const sorted = [...plans].sort(
     (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()
   );
 
-  function handleDelete(id: string) {
+  async function handleDelete(id: string) {
     if (confirm("Delete this practice plan?")) {
-      deletePlan(id);
+      await deletePlan(id);
     }
   }
 
@@ -19,9 +19,11 @@ export default function Plans() {
     <div>
       <div className="page-header">
         <h2>Practice Plans</h2>
-        <Link to="/plans/new" className="btn btn-primary">
-          + New Plan
-        </Link>
+        {isAdmin && (
+          <Link to="/plans/new" className="btn btn-primary">
+            + New Plan
+          </Link>
+        )}
       </div>
 
       {sorted.length === 0 ? (
@@ -60,29 +62,33 @@ export default function Plans() {
               )}
 
               <div className="flex gap-2" style={{ marginTop: 12 }}>
-                <Link
-                  to={`/plans/${plan.id}`}
-                  className="btn btn-outline btn-sm"
-                >
-                  Edit
-                </Link>
+                {isAdmin && (
+                  <Link
+                    to={`/plans/${plan.id}`}
+                    className="btn btn-outline btn-sm"
+                  >
+                    Edit
+                  </Link>
+                )}
                 <Link
                   to={`/plans/${plan.id}/view`}
                   className="btn btn-accent btn-sm"
                 >
                   View
                 </Link>
-                <button
-                  className="btn btn-sm"
-                  style={{
-                    background: "none",
-                    color: "var(--color-danger)",
-                    border: "1px solid var(--color-danger)",
-                  }}
-                  onClick={() => handleDelete(plan.id)}
-                >
-                  Delete
-                </button>
+                {isAdmin && (
+                  <button
+                    className="btn btn-sm"
+                    style={{
+                      background: "none",
+                      color: "var(--color-danger)",
+                      border: "1px solid var(--color-danger)",
+                    }}
+                    onClick={() => handleDelete(plan.id)}
+                  >
+                    Delete
+                  </button>
+                )}
               </div>
             </div>
           ))}

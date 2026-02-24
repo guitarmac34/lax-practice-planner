@@ -477,6 +477,63 @@ select {
   background: var(--color-bg);
 }
 
+/* Sidebar Footer / Admin */
+.sidebar-footer {
+  padding: 12px 20px;
+  border-top: 1px solid rgba(196, 169, 77, 0.3);
+}
+
+.admin-indicator {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.admin-badge {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: #C4A94D;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.btn-sidebar-action {
+  background: rgba(196, 169, 77, 0.2);
+  border: 1px solid rgba(196, 169, 77, 0.4);
+  color: rgba(255, 255, 255, 0.9);
+  padding: 6px 12px;
+  border-radius: var(--radius);
+  font-size: 0.82rem;
+  cursor: pointer;
+  transition: background 0.15s;
+  width: 100%;
+  text-align: center;
+}
+
+.btn-sidebar-action:hover {
+  background: rgba(196, 169, 77, 0.35);
+}
+
+.admin-indicator .btn-sidebar-action {
+  width: auto;
+}
+
+/* Loading Spinner */
+.loading-spinner {
+  width: 36px;
+  height: 36px;
+  border: 3px solid var(--color-border);
+  border-top-color: var(--color-primary);
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+  margin: 0 auto;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
 /* Password Gate */
 .password-gate {
   display: flex;

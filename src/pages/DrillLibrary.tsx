@@ -5,7 +5,7 @@ import DrillForm from "../components/DrillForm";
 import { getYouTubeEmbedUrl } from "../utils";
 
 export default function DrillLibrary() {
-  const { drills, addDrill, updateDrill, deleteDrill } = useApp();
+  const { drills, addDrill, updateDrill, deleteDrill, isAdmin } = useApp();
   const [showForm, setShowForm] = useState(false);
   const [editingDrill, setEditingDrill] = useState<Drill | undefined>();
   const [filterCategory, setFilterCategory] = useState<DrillCategory | "all">(
@@ -20,11 +20,11 @@ export default function DrillLibrary() {
     return true;
   });
 
-  function handleSave(drill: Drill) {
+  async function handleSave(drill: Drill) {
     if (editingDrill) {
-      updateDrill(drill);
+      await updateDrill(drill);
     } else {
-      addDrill(drill);
+      await addDrill(drill);
     }
     setShowForm(false);
     setEditingDrill(undefined);
@@ -35,9 +35,9 @@ export default function DrillLibrary() {
     setShowForm(true);
   }
 
-  function handleDelete(id: string) {
+  async function handleDelete(id: string) {
     if (confirm("Delete this drill?")) {
-      deleteDrill(id);
+      await deleteDrill(id);
     }
   }
 
@@ -45,15 +45,17 @@ export default function DrillLibrary() {
     <div>
       <div className="page-header">
         <h2>Drill Library</h2>
-        <button
-          className="btn btn-primary"
-          onClick={() => {
-            setEditingDrill(undefined);
-            setShowForm(true);
-          }}
-        >
-          + Add Drill
-        </button>
+        {isAdmin && (
+          <button
+            className="btn btn-primary"
+            onClick={() => {
+              setEditingDrill(undefined);
+              setShowForm(true);
+            }}
+          >
+            + Add Drill
+          </button>
+        )}
       </div>
 
       <div className="flex gap-2 mb-4 flex-wrap">
@@ -171,25 +173,27 @@ export default function DrillLibrary() {
                 </div>
               )}
 
-              <div className="flex gap-2" style={{ marginTop: 12 }}>
-                <button
-                  className="btn btn-outline btn-sm"
-                  onClick={() => handleEdit(drill)}
-                >
-                  Edit
-                </button>
-                <button
-                  className="btn btn-sm"
-                  style={{
-                    background: "none",
-                    color: "var(--color-danger)",
-                    border: "1px solid var(--color-danger)",
-                  }}
-                  onClick={() => handleDelete(drill.id)}
-                >
-                  Delete
-                </button>
-              </div>
+              {isAdmin && (
+                <div className="flex gap-2" style={{ marginTop: 12 }}>
+                  <button
+                    className="btn btn-outline btn-sm"
+                    onClick={() => handleEdit(drill)}
+                  >
+                    Edit
+                  </button>
+                  <button
+                    className="btn btn-sm"
+                    style={{
+                      background: "none",
+                      color: "var(--color-danger)",
+                      border: "1px solid var(--color-danger)",
+                    }}
+                    onClick={() => handleDelete(drill.id)}
+                  >
+                    Delete
+                  </button>
+                </div>
+              )}
             </div>
           ))}
         </div>
